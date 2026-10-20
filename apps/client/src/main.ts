@@ -26,12 +26,24 @@ let reachCache: ReturnType<typeof reachable> | null = null
 const queue: { state: CombatState; events: GameEvent[] }[] = []
 let pumping = false
 
+/**
+ * Adresse du serveur. En dev (vite sur :5173) : le serveur local sur :3001.
+ * En production : relative à la page (`ws` à côté de index.html), donc le préfixe
+ * éventuel (/coplarpon/) est conservé ; ws/wss suit http/https.
+ */
+function defaultServerUrl(): string {
+  if (import.meta.env.DEV) return `ws://${location.hostname || 'localhost'}:3001`
+  const u = new URL('ws', location.href)
+  u.protocol = u.protocol === 'https:' ? 'wss:' : 'ws:'
+  return u.href
+}
+
 const menu = {
   mode: 'solo' as 'solo' | 'multi',
   party: ['guerrier', 'pyromancien', 'pretre'],
   myClass: 'guerrier',
   name: 'Joueur' + Math.floor(Math.random() * 90 + 10),
-  url: params.get('server') ?? `ws://${location.hostname || 'localhost'}:3001`,
+  url: params.get('server') ?? defaultServerUrl(),
   encounter: ENCOUNTERS[0].id,
   players: [] as LobbyPlayer[],
   connected: false,
@@ -439,7 +451,7 @@ function renderMenu() {
            <button class="btn" id="connect">${menu.connected ? '✅ Connecté — rejoindre à nouveau' : 'Se connecter'}</button></div>
            <h2>Ta classe</h2><div class="row">${Object.keys(CLASSES).map((id) => classCard(id, menu.myClass, 'data-my')).join('')}</div>
            <h2>Joueurs dans le salon</h2><div class="lobby-list">${
-             menu.players.length ? menu.players.map((p) => `<p>• <b>${p.name}</b> — ${CLASSES[p.classId].name}</p>`).join('') : '<p style="color:var(--dim)">Personne pour l\'instant.</p>'
+             menu.players.length ? menu.players.map((p) => `<p>• <b>${p.name}</b> — ${CLASSES[p.classId].name}</p>`).join('') : `<p style="color:var(--dim)">Personne pour l'instant.</p>`
            }</div>`
     }
     <h2>Rencontre</h2>

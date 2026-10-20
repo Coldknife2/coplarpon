@@ -7,7 +7,7 @@ export const SPELLS: Record<string, SpellDef> = Object.fromEntries([
   S({
     id: 'estoc', name: 'Estoc', icon: '🗡️', cost: 3, rangeMin: 1, rangeMax: 1, los: false,
     target: 'enemy', area: { shape: 'single' },
-    desc: 'Coup d\'épée puissant. Dégâts de terre, repousse de 1 case.',
+    desc: "Coup d'épée puissant. Dégâts de terre, repousse de 1 case.",
     effects: [
       { type: 'damage', element: 'earth', min: 16, max: 20, to: 'enemies' },
       { type: 'push', dist: 1, to: 'enemies' },
@@ -51,7 +51,7 @@ export const SPELLS: Record<string, SpellDef> = Object.fromEntries([
   S({
     id: 'lance_de_givre', name: 'Lance de givre', icon: '❄️', cost: 3, rangeMin: 2, rangeMax: 6, los: true,
     target: 'enemy', area: { shape: 'single' },
-    desc: 'Dégâts d\'eau et -1 PM au prochain tour.',
+    desc: "Dégâts d'eau et -1 PM au prochain tour.",
     effects: [
       { type: 'damage', element: 'water', min: 12, max: 16, to: 'enemies' },
       {
@@ -89,7 +89,7 @@ export const SPELLS: Record<string, SpellDef> = Object.fromEntries([
   S({
     id: 'rayon_sacre', name: 'Rayon sacré', icon: '☀️', cost: 3, rangeMin: 1, rangeMax: 6, los: true,
     target: 'enemy', area: { shape: 'single' },
-    desc: 'Dégâts d\'air à distance.',
+    desc: "Dégâts d'air à distance.",
     effects: [{ type: 'damage', element: 'air', min: 12, max: 16, to: 'enemies' }],
   }),
   S({
@@ -135,7 +135,7 @@ export const SPELLS: Record<string, SpellDef> = Object.fromEntries([
   S({
     id: 'eclaboussure', name: 'Éclaboussure', icon: '💦', cost: 3, rangeMin: 1, rangeMax: 1, los: false,
     target: 'enemy', area: { shape: 'single' },
-    desc: 'Attaque d\'eau au corps à corps.',
+    desc: "Attaque d'eau au corps à corps.",
     effects: [{ type: 'damage', element: 'water', min: 9, max: 13, to: 'enemies' }],
   }),
   S({
@@ -153,7 +153,7 @@ export const SPELLS: Record<string, SpellDef> = Object.fromEntries([
   S({
     id: 'tir_rapide', name: 'Tir rapide', icon: '🏹', cost: 3, rangeMin: 2, rangeMax: 6, los: true,
     target: 'enemy', area: { shape: 'single' },
-    desc: 'Flèche d\'air.',
+    desc: "Flèche d'air.",
     effects: [{ type: 'damage', element: 'air', min: 11, max: 15, to: 'enemies' }],
   }),
   S({
@@ -200,7 +200,7 @@ export const SPELLS: Record<string, SpellDef> = Object.fromEntries([
   S({
     id: 'foudre', name: 'Foudre', icon: '⚡', cost: 4, rangeMin: 2, rangeMax: 5, los: true,
     target: 'enemy', area: { shape: 'single' },
-    desc: 'Éclair d\'air.',
+    desc: "Éclair d'air.",
     effects: [{ type: 'damage', element: 'air', min: 14, max: 18, to: 'enemies' }],
   }),
   S({

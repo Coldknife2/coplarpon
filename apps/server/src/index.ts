@@ -76,7 +76,7 @@ function handle(c: Client, msg: ClientMsg): void {
     case 'action': {
       if (!combat || combat.phase !== 'fighting') return
       const active = getUnit(combat, combat.activeId)
-      if (active.owner !== c.id) return send(c.ws, { t: 'error', msg: 'Ce n\'est pas ton tour.' })
+      if (active.owner !== c.id) return send(c.ws, { t: 'error', msg: "Ce n'est pas ton tour." })
       const res = applyAction(combat, msg.action)
       if (res.error) return send(c.ws, { t: 'error', msg: res.error })
       const played = playMobTurns(res.state)

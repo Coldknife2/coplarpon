@@ -141,7 +141,7 @@ describe('sorts', () => {
 })
 
 describe('tours et fin de combat', () => {
-  it('endTurn passe au suivant dans l\'ordre d\'initiative', () => {
+  it("endTurn passe au suivant dans l'ordre d'initiative", () => {
     const s = setup(['gelee', 'gobelin'])
     const first = s.activeId
     const r = applyAction(s, { type: 'endTurn' })
@@ -163,7 +163,7 @@ describe('tours et fin de combat', () => {
     expect(r.state.winner).toBe(0)
     expect(unitAt(r.state, hex(0, 0))).toBeUndefined()
   })
-  it('l\'état est immuable : applyAction ne mute pas l\'entrée', () => {
+  it("l'état est immuable : applyAction ne mute pas l'entrée", () => {
     const s = setup()
     const snap = JSON.stringify(s)
     applyAction(s, { type: 'endTurn' })
@@ -172,7 +172,7 @@ describe('tours et fin de combat', () => {
 })
 
 describe('IA', () => {
-  it('termine toujours un tour et ne casse pas l\'état', () => {
+  it("termine toujours un tour et ne casse pas l'état", () => {
     for (const enc of ENCOUNTERS) {
       for (let seed = 1; seed <= 4; seed++) {
         let s = createCombat({
@@ -193,7 +193,7 @@ describe('IA', () => {
       }
     }
   }, 60_000)
-  it('playMobTurns s\'arrête sur un joueur', () => {
+  it("playMobTurns s'arrête sur un joueur", () => {
     const s = setup(['gobelin', 'gelee'])
     const r = playMobTurns(s)
     expect(getUnit(r.state, r.state.activeId).team === 0 || r.state.phase === 'over').toBe(true)

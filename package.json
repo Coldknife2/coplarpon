@@ -8,6 +8,7 @@
     "dev:client": "npm run dev -w @coplarpon/client",
     "test": "npm run test -w @coplarpon/engine",
     "sim": "npm run sim -w @coplarpon/engine",
+    "check": "npm run typecheck && npm test",
     "typecheck": "tsc --noEmit -p packages/engine && tsc --noEmit -p apps/server && tsc --noEmit -p apps/client",
     "build": "npm run build -w @coplarpon/client"
   },

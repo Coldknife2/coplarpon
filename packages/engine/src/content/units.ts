@@ -57,9 +57,9 @@ export interface Encounter {
 }
 
 export const ENCOUNTERS: Encounter[] = [
-  { id: 'clairiere', name: 'La clairière', desc: '2 gelées et un gobelin archer. Pour s\'échauffer.', mobs: ['gelee', 'gelee', 'gobelin'] },
+  { id: 'clairiere', name: 'La clairière', desc: "2 gelées et un gobelin archer. Pour s'échauffer.", mobs: ['gelee', 'gelee', 'gobelin'] },
   { id: 'embuscade', name: 'Embuscade', desc: '2 gobelins archers et un chaman.', mobs: ['gobelin', 'gobelin', 'chaman'] },
-  { id: 'antre', name: 'L\'antre de l\'ogre', desc: 'Un ogre, son chaman et une gelée.', mobs: ['ogre', 'chaman', 'gelee'] },
+  { id: 'antre', name: "L'antre de l'ogre", desc: 'Un ogre, son chaman et une gelée.', mobs: ['ogre', 'chaman', 'gelee'] },
   { id: 'horde', name: 'La horde', desc: 'Ogre, chaman, gobelin et gelée. Bon courage.', mobs: ['ogre', 'chaman', 'gobelin', 'gelee'] },
 ]
 
