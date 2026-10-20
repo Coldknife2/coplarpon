@@ -27,15 +27,19 @@ const queue: { state: CombatState; events: GameEvent[] }[] = []
 let pumping = false
 
 /**
- * Adresse du serveur. En dev (vite sur :5173) : le serveur local sur :3001.
- * En production : relative à la page (`ws` à côté de index.html), donc le préfixe
- * éventuel (/coplarpon/) est conservé ; ws/wss suit http/https.
+ * Adresse du serveur de jeu par défaut. Jamais de chemin absolu : tout dérive de location,
+ * pour que l'appli marche à la racine, sous un sous-chemin, en HTTPS, derrière un proxy.
+ * Ordre : ?server= (debug) > VITE_SERVER_URL (build, serveur séparé) > ce défaut.
  */
 function defaultServerUrl(): string {
-  if (import.meta.env.DEV) return `ws://${location.hostname || 'localhost'}:3001`
-  const u = new URL('ws', location.href)
-  u.protocol = u.protocol === 'https:' ? 'wss:' : 'ws:'
-  return u.href
+  const fromEnv = import.meta.env.VITE_SERVER_URL as string | undefined
+  if (fromEnv) return fromEnv
+  if (!location.protocol.startsWith('http')) return 'ws://localhost:3001'
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws'
+  // Serveur de dev Vite : le serveur de jeu tourne à part, sur le port 3001.
+  if (location.port === '5173') return `${proto}://${location.hostname}:3001`
+  // Sinon le serveur de jeu sert aussi la page : même hôte, même dossier.
+  return `${proto}://${location.host}${location.pathname.replace(/[^/]*$/, '')}`
 }
 
 const menu = {

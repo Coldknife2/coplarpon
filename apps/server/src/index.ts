@@ -1,8 +1,10 @@
 // Serveur de combat autoritaire : un seul "salon" pour ce proto.
 // Il valide chaque action avec le moteur, fait jouer les monstres, et diffuse état + événements.
 
+import { createServer } from 'node:http'
 import { WebSocketServer, WebSocket } from 'ws'
 import { randomUUID } from 'node:crypto'
+import { createStaticHandler, findStaticDir } from './static'
 import {
   CLASSES, ENCOUNTERS, applyAction, createCombat, getUnit, playMobTurns,
 } from '@coplarpon/engine'
@@ -27,8 +29,23 @@ const broadcast = (m: ServerMsg) => clients.forEach((c) => send(c.ws, m))
 const lobbyPlayers = () => [...clients.values()].flatMap((c) => (c.player ? [c.player] : []))
 const broadcastLobby = () => broadcast({ t: 'lobby', players: lobbyPlayers() })
 
-const wss = new WebSocketServer({ port: PORT })
-console.log(`[coplarpon] serveur en écoute sur ws://localhost:${PORT}`)
+// Un seul port : HTTP (le client buildé, si présent) + WebSocket (le jeu).
+// STATIC_DIR force le dossier du client ; sinon on cherche ./public puis le build du monorepo.
+const staticDir = findStaticDir([process.env.STATIC_DIR, 'public', '../client/dist', 'apps/client/dist'])
+const serveStatic = staticDir ? createStaticHandler(staticDir) : null
+
+const http = createServer((req, res) => {
+  if (req.url === '/healthz') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' }).end('ok')
+    return
+  }
+  if (serveStatic?.(req, res)) return
+  res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }).end('Not found')
+})
+const wss = new WebSocketServer({ server: http })
+http.listen(PORT, '0.0.0.0', () => {
+  console.log(`[coplarpon] http + ws sur le port ${PORT} (client : ${staticDir ?? 'non servi, WebSocket seul'})`)
+})
 
 wss.on('connection', (ws) => {
   const client: Client = { id: randomUUID().slice(0, 8), ws }
