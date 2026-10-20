@@ -19,26 +19,6 @@ npm run sim                 # l'IA joue les deux camps (équilibrage / détectio
 npm run typecheck
 ```
 
-## Déploiement
-
-Un seul processus et un seul port : le serveur sert le client buildé (HTTP) **et** le jeu (WebSocket).
-
-```bash
-docker build -t coplarpon .          # le build échoue si typecheck ou tests échouent
-docker run -p 8000:8000 coplarpon    # PORT, STATIC_DIR configurables ; GET /healthz pour la sonde
-```
-
-Sans Docker : `npm run build && npm start`.
-
-- **Chemins relatifs partout** (`base: './'`, WebSocket dérivé de `location`) : l'appli marche à la racine,
-  sous un sous-chemin (`https://hôte/coplarpon/`), en HTTPS (→ `wss`) et derrière un reverse proxy.
-  Le proxy doit relayer les en-têtes `Upgrade`/`Connection` pour le WebSocket.
-- Serveur de jeu séparé du client : définir `VITE_SERVER_URL` au build (ex. `wss://jeu.exemple.fr/`).
-  `?server=ws://…` dans l'URL surcharge l'adresse à l'exécution (debug).
-- L'image finale ne contient que le serveur compilé en JS (moteur inclus, bundlé par esbuild) et le client,
-  tourne en utilisateur `node` (non-root) et a un `HEALTHCHECK`.
-- `npm run check` (typecheck engine + serveur + client, puis tests) est exécuté pendant le build de l'image.
-
 ## Architecture
 
 ```
